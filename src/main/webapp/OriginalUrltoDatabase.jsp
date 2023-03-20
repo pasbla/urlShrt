@@ -44,7 +44,6 @@
 							out.print("<li><a href=\"login.html\" class=\"highlight\"> Login </a></li>");
 						}
 						%>
-
 					</ul>
 				</nav>
 
