@@ -31,12 +31,7 @@ public class DatabaseAccessServlet extends HttpServlet {
      * 
      */
 	public static void main(String[] args) throws Exception {
-		DatabaseAccessServlet db = new DatabaseAccessServlet();
-		System.out.println("DatabaseAccessServlet:main()");
-		db.connectToDatabase();
-		db.readDatabase();
-		db.saveUrlToDataBase("Login1", "ShortUrl1", "OriginalUrl1", "1299-02-12");
-//		db.DeleteFromDataBase("ShortUrl1");
+		
 	}
 	
 	
@@ -76,7 +71,7 @@ public class DatabaseAccessServlet extends HttpServlet {
 	}
 	
 
-	public void readDatabase() throws Exception {
+	public void readDatabase() throws Exception { //read and put to System.out all data from "urlstack" table
 		try {
 
 			statement = connectToDatabase();
@@ -99,10 +94,6 @@ public class DatabaseAccessServlet extends HttpServlet {
 
 			statement = connectToDatabase();
 			resultSet = statement.executeQuery("SELECT * from urldatabase.urlstack WHERE UserMail = '" + email + "' ORDER BY ExpirationDate");
-			System.out.println("*********writeResultSet \"SELECT * from urldatabase.urlstack\":\n");
-			
-	//		writeResultSet(resultSet);
-			System.out.println("***********\nEND of: \"SELECT * from urldatabase.urlstack\"\n");
 			return resultSet;
 
 		} catch (Exception e) {
@@ -116,8 +107,8 @@ public class DatabaseAccessServlet extends HttpServlet {
 	private void writeResultSet(ResultSet resultSet) throws SQLException {
 		// ResultSet is initially before the first data set
 		while (resultSet.next()) {
-			// It is possible to get the columns via the column number
-			// "UserLogin, ShortenedUrl, OriginalUrl, ExpirationDate from
+			// Get the columns via the column number
+			// "UserMail, ShortenedUrl, OriginalUrl, ExpirationDate from
 			// urldatabase.urlstack");
 			String user = resultSet.getString("UserLogin");
 			String website = resultSet.getString("ShortenedUrl");
@@ -128,7 +119,6 @@ public class DatabaseAccessServlet extends HttpServlet {
 			System.out.println("Website: " + website);
 			System.out.println("summary: " + summary);
 			System.out.println("Date: " + date);
-			// System.out.println("Comment: " + comment);
 		}
 	}
 
@@ -155,12 +145,8 @@ public class DatabaseAccessServlet extends HttpServlet {
 		try {
 			String originalUrl = null;
 			statement = connectToDatabase();
-//			System.out.println("ShortenedUrl: " + ShortenedUrl);
 			String queryString = "SELECT * FROM urldatabase.urlstack WHERE ShortenedUrl = '" + ShortenedUrl + "'";
 			resultSet = statement.executeQuery(queryString);
-//			System.out.println("writeResultSet \"SELECT * from urldatabase.urlstack\":\n");
-		//	writeResultSet(resultSet);
-//			System.out.println("\nEND of: \"SELECT * from urldatabase.urlstack\"\n");
 			resultSet.next();
 			
 			originalUrl = resultSet.getString("OriginalUrl");
@@ -178,14 +164,6 @@ public class DatabaseAccessServlet extends HttpServlet {
 			} else {
 				return originalUrl;
 			}
-//			return "expirationDate: "+expirationDate
-//					+";;; loacalDate: "+localDate
-//					+";;;  expDate.compareTo(date): "+String.valueOf(compareTo)
-//					+";;; date2: "
-//					+";;; expirationDate.equals(localDate)\r\n "+expirationDate.equals(localDate)
-//					+";;; expirationDate.compareTo(date2)\r\n: "+String.valueOf(compareTo2);
-	//		return localDate;
-	//		return ;
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -200,13 +178,9 @@ public class DatabaseAccessServlet extends HttpServlet {
 			statement = connectToDatabase();
 			String queryString = "SELECT * from urldatabase.urlstack WHERE ShortenedUrl = '" + ShortenedUrl + "'";
 			resultSet = statement.executeQuery(queryString);
-//			System.out.println("writeResultSet \"SELECT * from urldatabase.urlstack\":\n");
-		//	writeResultSet(resultSet);
-//			System.out.println("\nEND of: \"SELECT * from urldatabase.urlstack\"\n");
 			resultSet.next();
 			Date date2 = resultSet.getDate("ExpirationDate");
 			return date2;
-//			return "return";
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -221,9 +195,8 @@ public class DatabaseAccessServlet extends HttpServlet {
 
 			connectToDatabase();
 			preparedStatement = connect.prepareStatement("INSERT into  urldatabase.urlstack values (default, ?, ?, ?, ?)");
-			// "UserLogin, ShortenedUrl, OriginalUrl, ExpirationDate
+			// "UserMail, ShortenedUrl, OriginalUrl, ExpirationDate
 
-//			System.out.println("Saving to database: " + UserLogin + "  " + OriginalUrl +  "... \n");
 
 			preparedStatement.setString(1, UserMail);
 			preparedStatement.setString(2, ShortenedUrl);
@@ -232,7 +205,6 @@ public class DatabaseAccessServlet extends HttpServlet {
 		
 			preparedStatement.executeUpdate();
 
-//			System.out.println("Seems to be saved \n");
 
 		} catch (Exception e) {
 			throw e;
@@ -312,7 +284,6 @@ public class DatabaseAccessServlet extends HttpServlet {
 			preparedStatement = connect.prepareStatement("DELETE from urldatabase.urlstack where ShortenedUrl= ? ; ");
 			preparedStatement.setString(1, ShortenedUrl);
 			preparedStatement.executeUpdate();
-//			System.out.println("Deleted ShortenerURl = " + ShortenedUrl + "\n");
 		} catch (Exception e) {
 			throw e;
 		} finally {
