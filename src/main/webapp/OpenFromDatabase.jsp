@@ -54,9 +54,7 @@
 			} else {
 				response.sendRedirect("//"+originalUrl);   //automatic redirection to URL without http protocol
 			}
-// 			out.println("uRL to URI: "+ uRL.toURI() + "<br/>"); 
-// 			response.sendRedirect(uRL.toString());
-			//	response.sendRedirect("//"+originalUrl);   //automatic redirection to originalURL			
+		
 		}else{
 			out.println("No address in database");
 		}
@@ -65,13 +63,6 @@
 	}
 %>
 
-<%-- 	<jsp:forward page="/WTP-Tutorial/index.html">
-		<jsp:param name="name" value="Chaitanya" /> 
-	</jsp:forward> 	 --%>
-<%
-	//response.sendRedirect("/WTP-Tutorial/index.html");
-	
-%>
 
 </body>
 </html>
